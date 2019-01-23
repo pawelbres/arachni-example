@@ -17,11 +17,8 @@ ENV ARACHNI_PASSWORD arachni
 ENV DB_ADAPTER sqlite
 
 COPY --from=0 /tmp/arachni /arachni
-#EXPOSE 9292
 
-ENTRYPOINT ["bin/arachni_rpcd"]
-CMD ["--address", "0.0.0.0"]
-
+ENTRYPOINT bin/arachni_rpcd --address $(hostname -i)
 
 FROM ubuntu:18.04 as arachni_server
 
@@ -33,7 +30,5 @@ ENV ARACHNI_PASSWORD arachni
 ENV DB_ADAPTER sqlite
 
 COPY --from=0 /tmp/arachni /arachni
-#EXPOSE 7331
 
-ENTRYPOINT ["bin/arachni_web"]
-CMD ["--host", "0.0.0.0"]
+ENTRYPOINT bin/arachni_web --host $(hostname -i)
