@@ -1,11 +1,13 @@
 FROM ubuntu:18.04 as builder
 
-COPY ./arachni-1.5.1-0.5.12-linux-x86_64.tar.gz /tmp/arachni.tar.gz
-
 RUN cd /tmp \
+    && apt-get update \
+    && apt-get install -y wget \
+    && wget -O /tmp/arachni.tar.gz https://github.com/Arachni/arachni/releases/download/v1.5.1/arachni-1.5.1-0.5.12-linux-x86_64.tar.gz \
     && tar -zxf arachni.tar.gz \
     && rm /tmp/arachni.tar.gz \
-    && mv /tmp/arachni* /tmp/arachni
+    && mv /tmp/arachni* /tmp/arachni \
+    && rm -rf /var/lib/apt/lists/*
 
 FROM ubuntu:18.04 as arachni_worker
 
